@@ -47,10 +47,25 @@
             </nav>
         </div>
 
+        <div class="container">
+            <form action="/sort" method="POST">
+                @csrf
+                <input type="date" name="sort">
+                <input type="submit" class="btn" style="background-color: black; color:white" value="Sort">
+                <br>
+              </form>
+        </div>
+        <br>
 
 
 
-        <div class=" container-fluid table-responsive mb-3">
+        <div class="container-fluid">
+            <button class="btn  btn-lg btn-block" style="background-color:black;color:white;" onclick="myFunction2()">UN-DELIVERED</button>
+            <hr   style="border-width: 3px; border-color:black">
+        </div>
+
+
+        <div class=" container-fluid table-responsive mb-3" id="undelivered">
             <table class="table table-hover table-condensed w-auto">
                 <thead>
                     <tr>
@@ -61,18 +76,19 @@
                             <th class="col-12 col-sm-1">Address</th>
                             <th class="col-12 col-sm-1">Postal Code</th>
                             <th class="col-12 col-sm-1">Phone</th>
-                            <th class="col-12 col-sm-1">ProductID</th>
-                            <th class="col-12 col-sm-1">Quantity</th>
+                            <th class="col-12 col-sm-1">PID</th>
+                            <th class="col-12 col-sm-1">Qty</th>
                             <th class="col-12 col-sm-1">Size</th>
                             <th class="col-12 col-sm-1">Price</th>
                             <th class="col-12 col-sm-1">Time</th>
                             <th class="col-12 col-sm-1">Delivered</th>
+                            <th class="col-12 col-sm-1">Check</th>
                         </div>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        @foreach ($orders as $o)
+                        @foreach ($ordersU as $o)
                             
                         <div class="row">
                             <td class="col-12 col-sm-1">{{$o->order_id}}</td>
@@ -87,6 +103,8 @@
                             <td class="col-12 col-sm-1">{{$o->price}}</td>
                             <td class="col-12 col-sm-1">{{$o->time}}</td>
                             <td class="col-12 col-sm-1">{{$o->completed}}</td>
+                            <th class="col-12 col-sm-1"><button class="btn btn-success" 
+                                onclick="location.href='/complete/{{$o->order_id}}'">check</button></th>
                         </div>
                     </tr>
                     @endforeach
@@ -115,8 +133,8 @@
                             <th class="col-12 col-sm-1">Address</th>
                             <th class="col-12 col-sm-1">Postal Code</th>
                             <th class="col-12 col-sm-1">Phone</th>
-                            <th class="col-12 col-sm-1">ProductID</th>
-                            <th class="col-12 col-sm-1">Quantity</th>
+                            <th class="col-12 col-sm-1">PID</th>
+                            <th class="col-12 col-sm-1">Qty</th>
                             <th class="col-12 col-sm-1">Size</th>
                             <th class="col-12 col-sm-1">Price</th>
                             <th class="col-12 col-sm-1">Time</th>
@@ -126,17 +144,24 @@
                 </thead>
                 <tbody>
                     <tr>
+                        @foreach ($ordersC as $o)
+                            
                         <div class="row">
-                            <!-- <td>
-                                <img src="1.jpg" style="width: 3rem; height: 3rem;">
-                            </td>
-                            <td>Blue Polo Shirt</td>
-                            <td><p>10</p></td>
-                            <td>Rs.1200.00</td>
-                            <td><button class="btn btn-primary">Update</button></td>
-                            <td><button class="btn btn-danger">Remove</button></td> -->
+                            <td class="col-12 col-sm-1">{{$o->order_id}}</td>
+                            <td class="col-12 col-sm-1">{{$o->user_id}}</td>
+                            <td class="col-12 col-sm-1">{{$o->email}}</td>
+                            <td class="col-12 col-sm-1">{{$o->address}}</td>
+                            <td class="col-12 col-sm-1">{{$o->post_code}}</td>
+                            <td class="col-12 col-sm-1">{{$o->phone}}</td>
+                            <td class="col-12 col-sm-1">{{$o->p_id}}</td>
+                            <td class="col-12 col-sm-1">{{$o->quantity}}</td>
+                            <td class="col-12 col-sm-1">{{$o->size}}</td>
+                            <td class="col-12 col-sm-1">{{$o->price}}</td>
+                            <td class="col-12 col-sm-1">{{$o->time}}</td>
+                            <td class="col-12 col-sm-1">{{$o->completed}}</td>
                         </div>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
             <hr   style="border-width: 3px; border-color:black">
@@ -145,10 +170,7 @@
 
 
 
-        <div class="container-fluid">
-            <button class="btn  btn-lg btn-block" style="background-color:black;color:white;" onclick="location.href='/addProduct'">UN-DELIVERED</button>
-            <hr   style="border-width: 3px; border-color:black">
-        </div>
+        
         
         <script>
             function myFunction() {
@@ -159,6 +181,17 @@
                 x.style.display = "none";
             }
             }
+
+            function myFunction2() {
+            var x = document.getElementById("undelivered");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+            }
+
+
         </script>
 
     </body>

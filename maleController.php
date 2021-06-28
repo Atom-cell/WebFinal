@@ -78,8 +78,10 @@ class maleController extends Controller
 
      public function orders()
      {
-        $orders = DB::select('select * from orders');
-        return view('orders',["orders"=>$orders]);
+        $ordersU = DB::select('select * from orders where completed=false');
+        $ordersC = DB::select('select * from orders where completed=true');
+
+        return view('orders',["ordersU"=>$ordersU,"ordersC"=>$ordersC]);
      }
 
     // public function PPage(){
@@ -149,6 +151,7 @@ class maleController extends Controller
         }
     }
 
+    //post method of edit
     public function updateProduct($id, Request $request){
         $name = $request->input('name'); 
         $quantity = $request->input('qty'); 
@@ -205,10 +208,11 @@ class maleController extends Controller
         }
         else
         {
-            $Record = DB::select('select * from male where gender=?',['male']);
+            // $Record = DB::select('select * from male where gender=?',['male']);
         // $Record2 = DB::select('select * from male where gender=female');  
 
-            return view('home', ["Record"=>$Record]);
+            // return view('home', ["Record"=>$Record]);
+            return view('login');
 
         }
     }
@@ -531,6 +535,64 @@ class maleController extends Controller
 
         }
 
+        public function search()
+        {
+            $Record = DB::select('select * from male where id=900');
+            $error="";
+            return view('search',["Record"=>$Record,'error'=> $error]);
+        }
+
+        public function searchQ(Request $request)
+        {
+            $item = $request->input('searchBar');
+            if($item=='shirts'){
+                $item='shirt'; 
+            }           
+
+            // "select terms from ajx where terms like '$searchterm%'"
+            $Record = DB::select("select * from male where name like '%$item'");  //,[$item]
+
+            if(count($Record)==0){
+                $error= 'Your search for "'.$item.'" did not yield any results. ';
+                return view('search',["Record"=>$Record,'error'=> $error]);
+            }else{
+                $error="";
+                return view('search',["Record"=>$Record,'error'=> $error]);
+            }
+        }
+
+        public function completeOrders($id)
+        {
+
+            DB::update('update orders set completed=? where order_id=?',[true,$id]);
+
+            $ordersU = DB::select('select * from orders where completed=false');
+            $ordersC = DB::select('select * from orders where completed=true');
+
+            return view('orders',["ordersU"=>$ordersU,"ordersC"=>$ordersC]);
+
+            // $ordersU = DB::select('select * from orders');
+            // return view('orders',["ordersU"=>$ordersU]);
+
+        }
+
+        public function customerdisplay()
+        {
+            $usr = DB::select('select * from table_users');
+            return view('customerManage',["usr"=>$usr]);
+        }
+
+        public function sort(Request $request)
+        {
+            $date = $request->input('sort');
+
+            $ordersU = DB::select("select * from orders where time like '%$date%' and completed=false");
+            $ordersC = DB::select("select * from orders where time like '%$date%' and completed=true");
+
+            return view('orders',["ordersU"=>$ordersU,"ordersC"=>$ordersC]);
+
+
+        }
 
 
 

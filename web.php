@@ -11,6 +11,16 @@ Route::get('/admin', 'App\Http\Controllers\maleController@admin');
 Route::get('/home','App\Http\Controllers\maleController@home');
 
 Route::get('/orders', 'App\Http\Controllers\maleController@orders');
+Route::get('/complete/{id}', 'App\Http\Controllers\maleController@completeOrders');
+Route::post('/sort', 'App\Http\Controllers\maleController@sort');
+
+
+Route::get('/customerDisplay', 'App\Http\Controllers\maleController@customerdisplay');
+
+
+
+
+
 
 Route::get('/addProduct', 'App\Http\Controllers\maleController@addPage');
 Route::post('/add', 'App\Http\Controllers\maleController@addProduct');
@@ -24,6 +34,9 @@ Route::get('/main/{gender}/{category}','App\Http\Controllers\maleController@main
 
 // Route::get('/view','App\Http\Controllers\maleController@view');
 Route::get('/view/{gender}/{category}','App\Http\Controllers\maleController@view');
+
+Route::get('/search','App\Http\Controllers\maleController@search');
+Route::post('/search','App\Http\Controllers\maleController@searchQ');
 
 
 
